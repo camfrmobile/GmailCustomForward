@@ -54,7 +54,7 @@ namespace GmailCustomForward
             {
                 string text = new System.Net.WebClient().DownloadString("https://raw.githubusercontent.com/camfrmobile/GmailCustomForward/main/isActive?t=" + new Random().Next(100, 999));
                 isActive = Convert.ToBoolean(text);
-                this.Enabled = isActive;
+                groupBox.Enabled = isActive;
                 splitContainer1.Enabled = isActive;
                 dataGridEmail.Enabled = isActive;
             }

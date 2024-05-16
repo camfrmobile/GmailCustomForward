@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox = new System.Windows.Forms.GroupBox();
             this.buttonOpenHidden = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -51,7 +51,7 @@
             this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.buttonOpenSkip = new System.Windows.Forms.Button();
-            this.groupBox3.SuspendLayout();
+            this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -59,25 +59,25 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridEmail)).BeginInit();
             this.SuspendLayout();
             // 
-            // groupBox3
+            // groupBox
             // 
-            this.groupBox3.Controls.Add(this.buttonOpenSkip);
-            this.groupBox3.Controls.Add(this.buttonOpenHidden);
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.dateTimePicker);
-            this.groupBox3.Controls.Add(this.textSend);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.buttonSend);
-            this.groupBox3.Controls.Add(this.textPass);
-            this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.textGmail);
-            this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Controls.Add(this.buttonGmail);
-            this.groupBox3.Location = new System.Drawing.Point(5, -2);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1474, 74);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
+            this.groupBox.Controls.Add(this.buttonOpenSkip);
+            this.groupBox.Controls.Add(this.buttonOpenHidden);
+            this.groupBox.Controls.Add(this.label4);
+            this.groupBox.Controls.Add(this.dateTimePicker);
+            this.groupBox.Controls.Add(this.textSend);
+            this.groupBox.Controls.Add(this.label3);
+            this.groupBox.Controls.Add(this.buttonSend);
+            this.groupBox.Controls.Add(this.textPass);
+            this.groupBox.Controls.Add(this.label2);
+            this.groupBox.Controls.Add(this.textGmail);
+            this.groupBox.Controls.Add(this.label1);
+            this.groupBox.Controls.Add(this.buttonGmail);
+            this.groupBox.Location = new System.Drawing.Point(5, -2);
+            this.groupBox.Name = "groupBox";
+            this.groupBox.Size = new System.Drawing.Size(1474, 74);
+            this.groupBox.TabIndex = 2;
+            this.groupBox.TabStop = false;
             // 
             // buttonOpenHidden
             // 
@@ -291,15 +291,15 @@
             this.ClientSize = new System.Drawing.Size(1482, 753);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
             this.Text = "Gmail Custom Forward";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Shown += new System.EventHandler(this.frmMain_Shown);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            this.groupBox.ResumeLayout(false);
+            this.groupBox.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -310,7 +310,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonGmail;
         private System.Windows.Forms.TextBox textGmail;
