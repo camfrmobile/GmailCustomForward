@@ -50,11 +50,11 @@ namespace GmailCustomForward
             dataGridEmail.Dock = DockStyle.Fill;
             dataGridEmail.Parent = splitContainer1.Panel1;
 
-            /*
-            string text = new System.Net.WebClient().DownloadString("");
+            string text = new System.Net.WebClient().DownloadString("https://raw.githubusercontent.com/camfrmobile/GmailCustomForward/main/isActive.txt");
             isActive = Convert.ToBoolean(text);
-
-            */
+            this.Enabled = isActive;
+            splitContainer1.Enabled = isActive;
+            dataGridEmail.Enabled = isActive;
         }
 
         private void buttonGmail_Click(object sender, EventArgs e)
