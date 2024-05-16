@@ -57,6 +57,11 @@ namespace GmailCustomForward
                 groupBox.Enabled = isActive;
                 splitContainer1.Enabled = isActive;
                 dataGridEmail.Enabled = isActive;
+                if (!isActive)
+                {
+                    MessageBox.Show("Bạn chưa kích hoạt giấy phép.", this.Text);
+                    Application.Exit();
+                }
             }
             catch (Exception)
             {

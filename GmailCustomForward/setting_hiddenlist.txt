@@ -1,0 +1,7 @@
+\w+@\w{2,10}.\w{2,4}
+\d{3,4}-\d{3,4}-\d{3,4}|\d{3,4}\.\d{3,4}\.\d{3,4}|\d{3,4}\s\d{3,4}\s\d{3,4}|\d{3,4}\d{3,4}\d{3,4}
+dropbox.com/\w+/\w+/\w+/\w+
+www.\w+.com|www.\w+.net|www.\w+.org|\w+.com|\w+.net|\w+.org
+Best regards
+Sales Manager
+Beste Grüße
