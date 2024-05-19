@@ -22,6 +22,7 @@ namespace GmailCustomForward
     public partial class frmMain : Form
     {
         static double version = 1.0;
+        static string appname = "Gmail Custom Forward";
         static bool isActive = false;
         static bool isRunning = false;
         static DataTable eTable = new DataTable();
@@ -51,6 +52,7 @@ namespace GmailCustomForward
         static string historyFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GmailCustomForward", "histories.txt");
 
         static int timerInterval = 5 * 60 * 1000;
+        static int timerIndex = 0;
 
         public frmMain()
         {
@@ -61,13 +63,16 @@ namespace GmailCustomForward
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            this.Text = $"{this.Text} {version.ToString("0.0")}";
+            this.Text = $"{appname} {version.ToString("0.0")}";
 
             dataGridEmail.Dock = DockStyle.Fill;
             dataGridEmail.Parent = splitContainer.Panel1;
 
+            timerIndex = timerInterval / 1000;
+            timerUpdate.Enabled = true;
+
             timerForward.Interval = timerInterval;
-            timerForward.Start();
+            timerForward.Enabled = true;
 
             eTable = new DataTable();
             eTable.Columns.Add("_eUid", typeof(string));
@@ -211,13 +216,9 @@ namespace GmailCustomForward
 
             SaveSetting();
 
-            Task mytask = new Task(() =>
-            {
-                ReadInboxAndSend(gmail, pass, sendAddress);
+            ReadInboxAndSend(gmail, pass, sendAddress);
 
-                isRunning = false;
-            });
-            mytask.Start();
+            isRunning = false;
         }
 
         private void dataGridEmail_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -300,7 +301,17 @@ namespace GmailCustomForward
 
         private void timerForward_Tick(object sender, EventArgs e)
         {
+            timerUpdate.Enabled = false;
 
+            buttonGmail_Click(null, null);
+
+            timerIndex = timerInterval / 1000;
+            timerUpdate.Enabled = true;
+        }
+
+        private void timerUpdate_Tick(object sender, EventArgs e)
+        {
+            this.Text = $"{appname} {version.ToString("0.0")} - {timerIndex--}s";
         }
 
         private void LoadSetting()
@@ -385,16 +396,16 @@ namespace GmailCustomForward
             var client = new ImapClient();
             int progress = 0;
             int maximum = 10;
-            DateTime sinceDate = DateTime.Today;
+            DateTime sinceTime = DateTime.Now.AddHours(-12);
             string space = "-";
 
             client.ServerCertificateValidationCallback = (s, c, h, e) => true;
             client.Connect(ipmap, port, true);
             client.Authenticate(email, pass);
             IMailFolder inbox = client.Inbox;
-            inbox.Open(FolderAccess.ReadWrite);
+            inbox.Open(FolderAccess.ReadOnly);
             // get list index
-            IList<UniqueId> inboxuids = checkGmailNotSeen.Checked ? inbox.Search(SearchQuery.NotSeen) : inbox.Search(SearchQuery.SentSince(sinceDate));
+            IList<UniqueId> inboxuids = inbox.Search(SearchQuery.SentSince(sinceTime));
             // get list labels
             IList<IMessageSummary> summaries = client.Inbox.Fetch(inboxuids, MessageSummaryItems.GMailLabels);
             maximum = inboxuids.Count;
@@ -459,9 +470,6 @@ namespace GmailCustomForward
                 // attachments
                 IEnumerable<MimeEntity> attachments = message.Attachments;
 
-                // seen
-                inbox.Append(message, MessageFlags.Seen);
-
                 // SMTP send mail
                 sendmsg.From.Add(new MailboxAddress(toName, email));
                 sendmsg.To.Add(new MailboxAddress(sendAddress.Replace("@gmail.com", ""), sendAddress));
@@ -477,11 +485,25 @@ namespace GmailCustomForward
                 eTable.Rows.Add(uniqueid, msgid, subject, $"{fromName} | {fromAddress}", labels, date);
 
                 // seen
-                inbox.Append(message, MessageFlags.Seen);                
+                //inbox.Append(message, MessageFlags.Seen);                
 
                 // history
                 histories.Add(msgid);
             }
+
+            /* seen
+            FolderNamespaceCollection namespaces = client.PersonalNamespaces;
+            foreach (FolderNamespace nspace in namespaces)
+            {
+                IMailFolder folder = client.GetFolder(nspace);
+                IList<IMailFolder> subfolders = folder.GetSubfolders();
+                foreach (IMailFolder subfolder in subfolders)
+                {
+                    if (subfolder.FullName == "[Gmail]" || subfolder.FullName == "INBOX") continue;
+                    subfolder.Open(FolderAccess.ReadOnly);
+                }
+            }*/
+
             client.Disconnect(true);
             smtp.Disconnect(true);
 

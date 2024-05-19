@@ -56,8 +56,8 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.timerForward = new System.Windows.Forms.Timer(this.components);
-            this.checkGmailNotSeen = new System.Windows.Forms.CheckBox();
             this.timerStart = new System.Windows.Forms.Timer(this.components);
+            this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -68,7 +68,6 @@
             // 
             // groupBox
             // 
-            this.groupBox.Controls.Add(this.checkGmailNotSeen);
             this.groupBox.Controls.Add(this.checkExitOnClose);
             this.groupBox.Controls.Add(this.linkListSpecial);
             this.groupBox.Controls.Add(this.linkListAfter);
@@ -114,10 +113,10 @@
             this.linkListAfter.AutoSize = true;
             this.linkListAfter.Location = new System.Drawing.Point(509, 43);
             this.linkListAfter.Name = "linkListAfter";
-            this.linkListAfter.Size = new System.Drawing.Size(251, 18);
+            this.linkListAfter.Size = new System.Drawing.Size(273, 18);
             this.linkListAfter.TabIndex = 12;
             this.linkListAfter.TabStop = true;
-            this.linkListAfter.Text = "Xóa toàn bộ nội dung phía sau từ này";
+            this.linkListAfter.Text = "Loại bỏ toàn bộ nội dung phía sau từ này";
             this.linkListAfter.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkListAfter_LinkClicked);
             // 
             // label3
@@ -207,7 +206,7 @@
             this.buttonGmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonGmail.Location = new System.Drawing.Point(6, 14);
             this.buttonGmail.Name = "buttonGmail";
-            this.buttonGmail.Size = new System.Drawing.Size(150, 109);
+            this.buttonGmail.Size = new System.Drawing.Size(150, 80);
             this.buttonGmail.TabIndex = 5;
             this.buttonGmail.Text = "Thực hiện";
             this.buttonGmail.UseVisualStyleBackColor = true;
@@ -334,22 +333,15 @@
             this.timerForward.Interval = 1000;
             this.timerForward.Tick += new System.EventHandler(this.timerForward_Tick);
             // 
-            // checkGmailNotSeen
-            // 
-            this.checkGmailNotSeen.AutoSize = true;
-            this.checkGmailNotSeen.Checked = true;
-            this.checkGmailNotSeen.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkGmailNotSeen.Location = new System.Drawing.Point(254, 104);
-            this.checkGmailNotSeen.Name = "checkGmailNotSeen";
-            this.checkGmailNotSeen.Size = new System.Drawing.Size(178, 22);
-            this.checkGmailNotSeen.TabIndex = 4;
-            this.checkGmailNotSeen.Text = "Chỉ lấy email chưa đọc";
-            this.checkGmailNotSeen.UseVisualStyleBackColor = true;
-            // 
             // timerStart
             // 
             this.timerStart.Interval = 500;
             this.timerStart.Tick += new System.EventHandler(this.timerStart_Tick);
+            // 
+            // timerUpdate
+            // 
+            this.timerUpdate.Interval = 1000;
+            this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
             // 
             // frmMain
             // 
@@ -405,8 +397,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn _eFrom;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eLabels;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eDate;
-        private System.Windows.Forms.CheckBox checkGmailNotSeen;
         private System.Windows.Forms.Timer timerStart;
+        private System.Windows.Forms.Timer timerUpdate;
     }
 }
 
