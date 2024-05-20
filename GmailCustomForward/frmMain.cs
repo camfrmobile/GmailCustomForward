@@ -21,7 +21,7 @@ namespace GmailCustomForward
 {
     public partial class frmMain : Form
     {
-        static double version = 1.1;
+        static double version = 1.2;
         static string appname = "Gmail Custom Forward";
         static bool isActive = false;
         static bool isRunning = false;
@@ -185,6 +185,7 @@ namespace GmailCustomForward
 
             if (string.IsNullOrEmpty(gmail) || string.IsNullOrEmpty(pass) ||string.IsNullOrEmpty(sendAddress))
             {
+                isRunning = false;
                 MessageBox.Show("Gmail, App pass, Gmail nhận không được để trống", this.Text);
                 return;
             }
@@ -221,6 +222,8 @@ namespace GmailCustomForward
             ReadInboxAndSend(gmail, pass, sendAddress);
 
             isRunning = false;
+
+            timerStart_Tick(null, null);
         }
 
         private void dataGridEmail_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -291,6 +294,9 @@ namespace GmailCustomForward
                 dataGridEmail.Enabled = isActive;
                 if (!isActive)
                 {
+                    timerForward.Enabled = isActive;
+                    timerUpdate.Enabled = isActive;
+                    timerStart.Enabled = isActive;
                     checkExitOnClose.Checked = true;
                     MessageBox.Show("Bạn chưa kích hoạt giấy phép.", this.Text);
                     Application.Exit();
@@ -314,6 +320,30 @@ namespace GmailCustomForward
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
             this.Text = $"{appname} {version.ToString("0.0")} - {timerIndex--}s";
+        }
+
+        private void buttonClearHistory_Click(object sender, EventArgs e)
+        {
+            string button = buttonClearHistory.Text;
+            histories.Clear();
+            File.WriteAllText(historyFile, "");
+            buttonClearHistory.Text = "Đã xóa lịch sử";
+            Task mytask = new Task(() =>
+            {
+                Thread.Sleep(1000);
+                if (buttonClearHistory.InvokeRequired)
+                {
+                    buttonClearHistory.Invoke((MethodInvoker)delegate
+                    {
+                        buttonClearHistory.Text = button;
+                    });
+                }
+                else
+                {
+                    buttonClearHistory.Text = button;
+                }
+            });
+            mytask.Start();
         }
 
         private void LoadSetting()
@@ -422,10 +452,16 @@ namespace GmailCustomForward
             {
                 SetupProgress(++progress, maximum);
                 UniqueId uniqueid = inboxuids[i];
-                IList<string> gmailabels = summaries[i].GMailLabels;
+
+                List<string> gmailabels = new List<string>();
+                foreach (var glabel in summaries[i].GMailLabels)
+                {
+                    if (glabel == @"\Important") continue;
+                    gmailabels.Add(glabel);
+                }
 
                 // skip mail not in label
-                if (gmailabels.Count == 1) continue;
+                if (gmailabels.Count == 0) continue;
 
                 //MimeMessage message = inbox.GetMessage(i);
                 MimeMessage message = inbox.GetMessage(uniqueid);
@@ -441,8 +477,11 @@ namespace GmailCustomForward
                 string subject = message.Subject;
                 string htmlbody = message.HtmlBody;
                 string textbody = message.TextBody;
-                string labels = string.Join(space, gmailabels).Replace("\\Important" + space, "");
+                string labels = string.Join(space, gmailabels);
                 bool isSkip = false;
+
+                if (htmlbody == null) continue;
+                //File.WriteAllText(msgid + ".html", htmlbody, Encoding.UTF8);
 
                 // skip list
                 foreach (var word in skipList)
@@ -455,12 +494,15 @@ namespace GmailCustomForward
                 if (isSkip) continue;
 
                 // special list
-                foreach (var item in specialList)
+                if (!string.IsNullOrEmpty(textbody))
                 {
-                    Match match = Regex.Match(textbody, @"\W" + item + @"\W");
-                    if (match.Success)
+                    foreach (var item in specialList)
                     {
-                        labels += $"{space}{item}";
+                        Match match = Regex.Match(textbody, @"\W" + item + @"\W");
+                        if (match.Success)
+                        {
+                            labels += $"{space}{item}";
+                        }
                     }
                 }
 
@@ -481,8 +523,11 @@ namespace GmailCustomForward
                 {
                     sendmsg.Attachments.Append(item);
                 }
-                smtp.Send(sendmsg);
-
+                string result = smtp.Send(sendmsg);
+                if (!result.Contains("2.0.0 OK"))
+                {
+                    break;
+                }
                 // add form
                 eTable.Rows.Add(uniqueid, msgid, subject, $"{fromName} | {fromAddress}", labels, date);
 
@@ -520,6 +565,7 @@ namespace GmailCustomForward
         private string ClearSecret(string html, string fromName, string fromAddress)
         {
             string source = html;
+            string[] names = fromName.Split(' ');
 
             // remove regex
             string[] lines = source.Replace("><", ">|<").Split('|');
@@ -530,11 +576,14 @@ namespace GmailCustomForward
                 bool isExclude = false;
 
                 // remove signature
-                foreach (var item in afterList)
+                if (i >= lines.Length / 4)
                 {
-                    if (line.Contains(item) || line.ToLower().Contains(item.ToLower()))
+                    foreach (var item in afterList)
                     {
-                        isHasSign = true;
+                        if (line.Contains(item) || line.ToLower().Contains(item.ToLower()))
+                        {
+                            isHasSign = true;
+                        }
                     }
                 }
                 foreach (var item in excludeList)
@@ -550,7 +599,7 @@ namespace GmailCustomForward
                 }
                 else if (isHasSign)
                 {
-                    line = string.Empty;
+                    line = "<div style=\"margin:10px\"></div>";
                 }
                 else
                 {
@@ -558,6 +607,14 @@ namespace GmailCustomForward
                     foreach (var pattern in hiddenList)
                     {
                         line = Regex.Replace(line, pattern, "", RegexOptions.IgnoreCase);
+                    }
+                    // remove each name form name
+                    foreach (var name in names)
+                    {
+                        if (Regex.Match(line, @"\W" + name + @"\W").Success)
+                        {
+                            line = line.Replace(name, "");
+                        }
                     }
                 }
                 lines[i] = line;
@@ -569,14 +626,6 @@ namespace GmailCustomForward
             // remove from address
             source = source.Replace(fromAddress, "").Replace(fromAddress.Replace("@gmail.com", ""), "");
             
-            /* remove each name form name
-            string[] array = fromName.Split(' ');
-            foreach (var name in array)
-            {
-                source.Replace(name, "[?]");
-            }
-            */
-
             // remove money
             source = Regex.Replace(source, @"\$\d+.\d+|\$\d+|\$.\d+", "XX");
 

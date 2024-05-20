@@ -58,6 +58,7 @@
             this.timerForward = new System.Windows.Forms.Timer(this.components);
             this.timerStart = new System.Windows.Forms.Timer(this.components);
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
+            this.buttonClearHistory = new System.Windows.Forms.Button();
             this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -68,6 +69,7 @@
             // 
             // groupBox
             // 
+            this.groupBox.Controls.Add(this.buttonClearHistory);
             this.groupBox.Controls.Add(this.checkExitOnClose);
             this.groupBox.Controls.Add(this.linkListSpecial);
             this.groupBox.Controls.Add(this.linkListAfter);
@@ -343,6 +345,16 @@
             this.timerUpdate.Interval = 1000;
             this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
             // 
+            // buttonClearHistory
+            // 
+            this.buttonClearHistory.Location = new System.Drawing.Point(6, 100);
+            this.buttonClearHistory.Name = "buttonClearHistory";
+            this.buttonClearHistory.Size = new System.Drawing.Size(150, 26);
+            this.buttonClearHistory.TabIndex = 17;
+            this.buttonClearHistory.Text = "Xóa lịch sử";
+            this.buttonClearHistory.UseVisualStyleBackColor = true;
+            this.buttonClearHistory.Click += new System.EventHandler(this.buttonClearHistory_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -400,6 +412,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn _eDate;
         private System.Windows.Forms.Timer timerStart;
         private System.Windows.Forms.Timer timerUpdate;
+        private System.Windows.Forms.Button buttonClearHistory;
     }
 }
 
