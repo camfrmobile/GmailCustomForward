@@ -21,7 +21,7 @@ namespace GmailCustomForward
 {
     public partial class frmMain : Form
     {
-        static double version = 1.0;
+        static double version = 1.1;
         static string appname = "Gmail Custom Forward";
         static bool isActive = false;
         static bool isRunning = false;
@@ -88,53 +88,45 @@ namespace GmailCustomForward
 
         private void frmMain_Shown(object sender, EventArgs e)
         {
-            timerStart.Enabled = true;
+            if (!Directory.Exists(appFolder)) Directory.CreateDirectory(appFolder);
 
             LoadSetting();
 
-            if (Directory.Exists(htmlFolder))
-            {
-                Directory.Delete(htmlFolder, true);
-            }
+            timerStart.Enabled = true;
 
-            string listFile = Path.GetFileName(hiddenListFile);
+            string listFile = Path.Combine(Application.StartupPath, Path.GetFileName(hiddenListFile));
             if (File.Exists(listFile))
             {
                 if (File.Exists(hiddenListFile)) File.Delete(hiddenListFile);
                 File.Move(listFile, hiddenListFile);
             }
 
-            listFile = Path.GetFileName(afterListFile);
+            listFile = Path.Combine(Application.StartupPath, Path.GetFileName(afterListFile));
             if (File.Exists(listFile))
             {
                 if (File.Exists(afterListFile)) File.Delete(afterListFile);
                 File.Move(listFile, afterListFile);
             }
 
-            listFile = Path.GetFileName(specialListFile);
+            listFile = Path.Combine(Application.StartupPath, Path.GetFileName(specialListFile));
             if (File.Exists(listFile))
             {
                 if (File.Exists(specialListFile)) File.Delete(specialListFile);
                 File.Move(listFile, specialListFile);
             }
 
-            listFile = Path.GetFileName(excludeListFile);
+            listFile = Path.Combine(Application.StartupPath, Path.GetFileName(excludeListFile));
             if (File.Exists(listFile))
             {
                 if (File.Exists(excludeListFile)) File.Delete(excludeListFile);
                 File.Move(listFile, excludeListFile);
             }
 
-            listFile = Path.GetFileName(skipListFile);
+            listFile = Path.Combine(Application.StartupPath, Path.GetFileName(skipListFile));
             if (File.Exists(listFile))
             {
                 if (File.Exists(skipListFile)) File.Delete(skipListFile);
                 File.Move(listFile, skipListFile);
-            }
-
-            if (!Directory.Exists(appFolder))
-            {
-                Directory.CreateDirectory(appFolder);
             }
 
             SetupStartup();
@@ -189,15 +181,15 @@ namespace GmailCustomForward
             string pass = textPass.Text.Trim();
             string sendAddress = textSend.Text.Trim();
 
+            if (Directory.Exists(htmlFolder)) Directory.Delete(htmlFolder, true);
+
             if (string.IsNullOrEmpty(gmail) || string.IsNullOrEmpty(pass) ||string.IsNullOrEmpty(sendAddress))
             {
                 MessageBox.Show("Gmail, App pass, Gmail nhận không được để trống", this.Text);
                 return;
             }
-            if (!Directory.Exists(htmlFolder))
-            {
-                Directory.CreateDirectory(htmlFolder);
-            }
+
+            if (!Directory.Exists(htmlFolder)) Directory.CreateDirectory(htmlFolder);
 
             if (File.Exists(hiddenListFile))
             {
