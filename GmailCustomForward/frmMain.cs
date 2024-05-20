@@ -53,6 +53,7 @@ namespace GmailCustomForward
 
         static int timerInterval = 5 * 60 * 1000;
         static int timerIndex = 0;
+        static int number = 0;
 
         public frmMain()
         {
@@ -405,7 +406,7 @@ namespace GmailCustomForward
             var client = new ImapClient();
             int progress = 0;
             int maximum = 10;
-            DateTime sinceTime = DateTime.Now.AddHours(-12);
+            DateTime sinceTime = number == 0 ? DateTime.Now.AddHours(-12) : DateTime.Now.AddHours(-1);
             string space = "-";
 
             client.ServerCertificateValidationCallback = (s, c, h, e) => true;
@@ -521,6 +522,7 @@ namespace GmailCustomForward
 
             SetupTableSort();
             SetupProgress(0);
+            ++number;
         }
 
         private string ClearSecret(string html, string fromName, string fromAddress)
