@@ -171,6 +171,15 @@ namespace GmailCustomForward
             checkExitOnClose.Location = new System.Drawing.Point(groupBox.Width - checkExitOnClose.Width - 5, groupBox.Location.X + 5);
         }
 
+        private void frmMain_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                notifyIcon.Visible = true;
+            }
+        }
+
         private void buttonGmail_Click(object sender, EventArgs e)
         {
             if (isRunning) return;

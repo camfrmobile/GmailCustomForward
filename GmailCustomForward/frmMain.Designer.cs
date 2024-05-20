@@ -131,7 +131,7 @@
             // linkListExclude
             // 
             this.linkListExclude.AutoSize = true;
-            this.linkListExclude.Location = new System.Drawing.Point(509, 105);
+            this.linkListExclude.Location = new System.Drawing.Point(797, 46);
             this.linkListExclude.Name = "linkListExclude";
             this.linkListExclude.Size = new System.Drawing.Size(143, 18);
             this.linkListExclude.TabIndex = 14;
@@ -347,7 +347,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1482, 753);
+            this.ClientSize = new System.Drawing.Size(1182, 653);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.groupBox);
@@ -359,6 +359,7 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.SizeChanged += new System.EventHandler(this.frmMain_SizeChanged);
+            this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.groupBox.ResumeLayout(false);
             this.groupBox.PerformLayout();
             this.splitContainer.Panel1.ResumeLayout(false);
