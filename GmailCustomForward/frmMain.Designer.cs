@@ -31,6 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.groupBox = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.linkListSkipEmail = new System.Windows.Forms.LinkLabel();
+            this.buttonClearHistory = new System.Windows.Forms.Button();
             this.checkExitOnClose = new System.Windows.Forms.CheckBox();
             this.linkListSpecial = new System.Windows.Forms.LinkLabel();
             this.linkListAfter = new System.Windows.Forms.LinkLabel();
@@ -46,19 +50,19 @@
             this.buttonGmail = new System.Windows.Forms.Button();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.dataGridEmail = new System.Windows.Forms.DataGridView();
-            this._eUid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._eMid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._eSubject = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._eFrom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._eLabels = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._eDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.timerForward = new System.Windows.Forms.Timer(this.components);
             this.timerStart = new System.Windows.Forms.Timer(this.components);
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.buttonClearHistory = new System.Windows.Forms.Button();
+            this._eUid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._eMid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._eSubject = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._eFrom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._eLabels = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._eLocalDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._eSentDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -69,6 +73,9 @@
             // 
             // groupBox
             // 
+            this.groupBox.Controls.Add(this.label4);
+            this.groupBox.Controls.Add(this.dateTimePicker);
+            this.groupBox.Controls.Add(this.linkListSkipEmail);
             this.groupBox.Controls.Add(this.buttonClearHistory);
             this.groupBox.Controls.Add(this.checkExitOnClose);
             this.groupBox.Controls.Add(this.linkListSpecial);
@@ -88,6 +95,45 @@
             this.groupBox.Size = new System.Drawing.Size(1474, 130);
             this.groupBox.TabIndex = 0;
             this.groupBox.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(162, 106);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(79, 18);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Quét từ lúc";
+            // 
+            // dateTimePicker
+            // 
+            this.dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker.Location = new System.Drawing.Point(254, 102);
+            this.dateTimePicker.Name = "dateTimePicker";
+            this.dateTimePicker.Size = new System.Drawing.Size(234, 24);
+            this.dateTimePicker.TabIndex = 19;
+            this.dateTimePicker.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
+            // 
+            // linkListSkipEmail
+            // 
+            this.linkListSkipEmail.AutoSize = true;
+            this.linkListSkipEmail.Location = new System.Drawing.Point(797, 43);
+            this.linkListSkipEmail.Name = "linkListSkipEmail";
+            this.linkListSkipEmail.Size = new System.Drawing.Size(211, 18);
+            this.linkListSkipEmail.TabIndex = 18;
+            this.linkListSkipEmail.TabStop = true;
+            this.linkListSkipEmail.Text = "Bỏ qua những địa chỉ email này";
+            this.linkListSkipEmail.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkListSkipEmail_LinkClicked);
+            // 
+            // buttonClearHistory
+            // 
+            this.buttonClearHistory.Location = new System.Drawing.Point(6, 100);
+            this.buttonClearHistory.Name = "buttonClearHistory";
+            this.buttonClearHistory.Size = new System.Drawing.Size(150, 26);
+            this.buttonClearHistory.TabIndex = 17;
+            this.buttonClearHistory.Text = "Xóa lịch sử";
+            this.buttonClearHistory.UseVisualStyleBackColor = true;
+            this.buttonClearHistory.Click += new System.EventHandler(this.buttonClearHistory_Click);
             // 
             // checkExitOnClose
             // 
@@ -133,7 +179,7 @@
             // linkListExclude
             // 
             this.linkListExclude.AutoSize = true;
-            this.linkListExclude.Location = new System.Drawing.Point(797, 46);
+            this.linkListExclude.Location = new System.Drawing.Point(797, 73);
             this.linkListExclude.Name = "linkListExclude";
             this.linkListExclude.Size = new System.Drawing.Size(143, 18);
             this.linkListExclude.TabIndex = 14;
@@ -240,7 +286,8 @@
             this._eSubject,
             this._eFrom,
             this._eLabels,
-            this._eDate});
+            this._eLocalDate,
+            this._eSentDate});
             this.dataGridEmail.Location = new System.Drawing.Point(3, 3);
             this.dataGridEmail.Name = "dataGridEmail";
             this.dataGridEmail.ReadOnly = true;
@@ -250,6 +297,44 @@
             this.dataGridEmail.Size = new System.Drawing.Size(485, 594);
             this.dataGridEmail.TabIndex = 20;
             this.dataGridEmail.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridEmail_CellClick);
+            // 
+            // webBrowser
+            // 
+            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser.Name = "webBrowser";
+            this.webBrowser.Size = new System.Drawing.Size(979, 600);
+            this.webBrowser.TabIndex = 21;
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(5, 130);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(1474, 12);
+            this.progressBar.TabIndex = 10;
+            // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "Gmail Custom Forward";
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+            // 
+            // timerForward
+            // 
+            this.timerForward.Interval = 1000;
+            this.timerForward.Tick += new System.EventHandler(this.timerForward_Tick);
+            // 
+            // timerStart
+            // 
+            this.timerStart.Interval = 500;
+            this.timerStart.Tick += new System.EventHandler(this.timerStart_Tick);
+            // 
+            // timerUpdate
+            // 
+            this.timerUpdate.Interval = 1000;
+            this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
             // 
             // _eUid
             // 
@@ -298,62 +383,23 @@
             this._eLabels.ReadOnly = true;
             this._eLabels.Width = 200;
             // 
-            // _eDate
+            // _eLocalDate
             // 
-            this._eDate.DataPropertyName = "_eDate";
-            this._eDate.HeaderText = "Date";
-            this._eDate.MinimumWidth = 6;
-            this._eDate.Name = "_eDate";
-            this._eDate.ReadOnly = true;
-            this._eDate.Width = 125;
+            this._eLocalDate.DataPropertyName = "_eLocalDate";
+            this._eLocalDate.HeaderText = "Local date";
+            this._eLocalDate.MinimumWidth = 6;
+            this._eLocalDate.Name = "_eLocalDate";
+            this._eLocalDate.ReadOnly = true;
+            this._eLocalDate.Width = 125;
             // 
-            // webBrowser
+            // _eSentDate
             // 
-            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser.Name = "webBrowser";
-            this.webBrowser.Size = new System.Drawing.Size(979, 600);
-            this.webBrowser.TabIndex = 21;
-            // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(5, 130);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(1474, 12);
-            this.progressBar.TabIndex = 10;
-            // 
-            // notifyIcon
-            // 
-            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "Gmail Custom Forward";
-            this.notifyIcon.Visible = true;
-            this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
-            // 
-            // timerForward
-            // 
-            this.timerForward.Interval = 1000;
-            this.timerForward.Tick += new System.EventHandler(this.timerForward_Tick);
-            // 
-            // timerStart
-            // 
-            this.timerStart.Interval = 500;
-            this.timerStart.Tick += new System.EventHandler(this.timerStart_Tick);
-            // 
-            // timerUpdate
-            // 
-            this.timerUpdate.Interval = 1000;
-            this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
-            // 
-            // buttonClearHistory
-            // 
-            this.buttonClearHistory.Location = new System.Drawing.Point(6, 100);
-            this.buttonClearHistory.Name = "buttonClearHistory";
-            this.buttonClearHistory.Size = new System.Drawing.Size(150, 26);
-            this.buttonClearHistory.TabIndex = 17;
-            this.buttonClearHistory.Text = "Xóa lịch sử";
-            this.buttonClearHistory.UseVisualStyleBackColor = true;
-            this.buttonClearHistory.Click += new System.EventHandler(this.buttonClearHistory_Click);
+            this._eSentDate.DataPropertyName = "_eSentDate";
+            this._eSentDate.HeaderText = "Sent date";
+            this._eSentDate.MinimumWidth = 6;
+            this._eSentDate.Name = "_eSentDate";
+            this._eSentDate.ReadOnly = true;
+            this._eSentDate.Width = 125;
             // 
             // frmMain
             // 
@@ -404,15 +450,19 @@
         private System.Windows.Forms.LinkLabel linkListAfter;
         private System.Windows.Forms.LinkLabel linkListSpecial;
         private System.Windows.Forms.CheckBox checkExitOnClose;
+        private System.Windows.Forms.Timer timerStart;
+        private System.Windows.Forms.Timer timerUpdate;
+        private System.Windows.Forms.Button buttonClearHistory;
+        private System.Windows.Forms.LinkLabel linkListSkipEmail;
+        private System.Windows.Forms.DateTimePicker dateTimePicker;
+        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eUid;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eMid;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eSubject;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eFrom;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eLabels;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _eDate;
-        private System.Windows.Forms.Timer timerStart;
-        private System.Windows.Forms.Timer timerUpdate;
-        private System.Windows.Forms.Button buttonClearHistory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _eLocalDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _eSentDate;
     }
 }
 

@@ -129,6 +129,9 @@
     <Content Include="setting_skip.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="setting_skipemail.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="setting_special.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
