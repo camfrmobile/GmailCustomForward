@@ -57,12 +57,12 @@
             this.timerStart = new System.Windows.Forms.Timer(this.components);
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this._eUid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._eMid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._eSubject = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._eFrom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._eLabels = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._eLocalDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._eSentDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._eMid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -282,12 +282,12 @@
             this.dataGridEmail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridEmail.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this._eUid,
-            this._eMid,
             this._eSubject,
             this._eFrom,
             this._eLabels,
             this._eLocalDate,
-            this._eSentDate});
+            this._eSentDate,
+            this._eMid});
             this.dataGridEmail.Location = new System.Drawing.Point(3, 3);
             this.dataGridEmail.Name = "dataGridEmail";
             this.dataGridEmail.ReadOnly = true;
@@ -346,16 +346,6 @@
             this._eUid.Visible = false;
             this._eUid.Width = 125;
             // 
-            // _eMid
-            // 
-            this._eMid.DataPropertyName = "_eMid";
-            this._eMid.HeaderText = "Msg Id";
-            this._eMid.MinimumWidth = 6;
-            this._eMid.Name = "_eMid";
-            this._eMid.ReadOnly = true;
-            this._eMid.Visible = false;
-            this._eMid.Width = 125;
-            // 
             // _eSubject
             // 
             this._eSubject.DataPropertyName = "_eSubject";
@@ -400,6 +390,15 @@
             this._eSentDate.Name = "_eSentDate";
             this._eSentDate.ReadOnly = true;
             this._eSentDate.Width = 125;
+            // 
+            // _eMid
+            // 
+            this._eMid.DataPropertyName = "_eMid";
+            this._eMid.HeaderText = "Msg Id";
+            this._eMid.MinimumWidth = 6;
+            this._eMid.Name = "_eMid";
+            this._eMid.ReadOnly = true;
+            this._eMid.Width = 125;
             // 
             // frmMain
             // 
@@ -457,12 +456,12 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eUid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _eMid;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eSubject;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eFrom;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eLabels;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eLocalDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn _eSentDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _eMid;
     }
 }
 

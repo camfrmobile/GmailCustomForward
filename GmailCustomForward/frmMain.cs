@@ -21,7 +21,7 @@ namespace GmailCustomForward
 {
     public partial class frmMain : Form
     {
-        static double version = 1.9;
+        static double version = 2.0;
         static string appname = "Gmail Custom Forward";
         static bool isActive = false;
         static bool isRunning = false;
@@ -83,12 +83,12 @@ namespace GmailCustomForward
 
             eTable = new DataTable();
             eTable.Columns.Add("_eUid", typeof(string));
-            eTable.Columns.Add("_eMid", typeof(string));
             eTable.Columns.Add("_eSubject", typeof(string));
             eTable.Columns.Add("_eFrom", typeof(string));
             eTable.Columns.Add("_eLabels", typeof(string));
             eTable.Columns.Add("_eLocalDate", typeof(string));
             eTable.Columns.Add("_eSentDate", typeof(string));
+            eTable.Columns.Add("_eMid", typeof(string));
 
             dataGridEmail.DataSource = eTable;
         }
@@ -591,7 +591,7 @@ namespace GmailCustomForward
                     break;
                 }
                 // add form
-                eTable.Rows.Add(uniqueid, msgid, subject, $"{fromName} | {fromAddress}", labels, localDate, sentDate);
+                eTable.Rows.Add(uniqueid, subject, $"{fromName} | {fromAddress}", labels, localDate, sentDate, msgid);
 
                 // seen
                 //inbox.Append(message, MessageFlags.Seen);                
@@ -638,7 +638,7 @@ namespace GmailCustomForward
                 bool isExclude = false;
 
                 // remove signature
-                if (i >= lines.Length / 4 && i > 1)
+                if (i >= lines.Length / 4 && i > 0)
                 {
                     foreach (var item in afterList)
                     {
